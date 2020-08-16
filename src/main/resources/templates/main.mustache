@@ -1,15 +1,28 @@
 <html>
-
 <body>
-
 <div>
+    <div>Форма ввода
+        <form method="post">
+            <input type="text" name="text" placeholder="Введите тект"/>
+            <input type="text" name="tag" placeholder="Введите тег"/>
+            <button type="submit">Добавить сообщение</button>
+        </form>
+    </div>
 
-    Hello, {{some}}!
-
+    <div>Список сообщений</div>
+    {{#messages}}
+        <div>
+            <b>{{id}}</b>
+            <span>{{text}}</span>
+            <i>{{tag}}</i>
+        </div>
+    {{/messages}}
+    <div>
+        <form method="post" action="filter">
+            <input type="text" name="filter"/>
+            <button type="submit">Найти</button>
+        </form>
+    </div>
 </div>
-
 </body>
-
-
-
 </html>
