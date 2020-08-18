@@ -24,6 +24,11 @@ public class AuthController {
         return "registration";
     }
 
+//    @GetMapping("/login")
+//    public String loginPage() {
+//        return "login";
+//    }
+
     @PostMapping("/register")
     public String registerUser(User user, Map<String, Object> model) {
         User userFromDb = userRepository.findByUsername(user.getUsername());
