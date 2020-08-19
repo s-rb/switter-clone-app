@@ -2,7 +2,8 @@
 <#import "parts/loginTemplate.ftl" as l>
 
 <@c.page>
-    Add new user
+<#--    mb-1 - margin botton 1-->
+    <div class="mb-1">Add new user</div>
     ${message?ifExists}
-    <@l.login "/register" />
+    <@l.login "/register" true/>
 </@c.page>

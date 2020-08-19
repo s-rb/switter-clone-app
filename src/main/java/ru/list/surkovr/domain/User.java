@@ -25,6 +25,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING) // хранить в виде строки
     private Set<Role> roles;
 
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
+    }
+
     public User() {
     }
 
