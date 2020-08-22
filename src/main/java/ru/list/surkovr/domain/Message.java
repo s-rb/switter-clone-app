@@ -1,6 +1,9 @@
 package ru.list.surkovr.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Message {
@@ -9,8 +12,10 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Please fill the message")
+    @Length(max = 2048, message = "Too long message (more than 2048)")
     private String text;
-
+    @Length(max = 255, message = "Too long tag (more than 255)")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.list.surkovr.enums.Role;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
@@ -15,9 +17,16 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Username could not be blank")
     private String username;
+    @NotBlank(message = "Password could not be blank")
     private String password;
+    @Transient
+    @NotBlank(message = "Password confirmation could not be blank")
+    private String password2;
     private boolean isActive;
+    @Email(message = "Email is not correct")
+    @NotBlank(message = "Email could not be blank")
     private String email;
     private String activationCode;
 
@@ -113,5 +122,13 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
     }
 }

@@ -26,7 +26,7 @@ public class MailConfig {
 
 
     @Bean
-    public JavaMailSender getMailSender() {
+    public JavaMailSender emailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         mailSender.setHost(host);
