@@ -16,6 +16,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/main">Messages</a>
             </li>
+<#--             показываем только авторизованным пользователям. Переменная юзер определяется в секъюрити темплейте-->
+            <#if user??>
+            <li class="nav-item">
+                <a class="nav-link" href="/user-messages/${currentUserId}">My messages</a>
+            </li>
+            </#if>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">Userlist</a>
