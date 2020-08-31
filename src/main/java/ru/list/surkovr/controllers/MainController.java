@@ -66,6 +66,7 @@ public class MainController {
                       @AuthenticationPrincipal User user,
                       @Valid Message message,
                       BindingResult bindingResult,
+                      @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable,
                       Model model) throws IOException {
         message.setAuthor(user);
 
@@ -78,8 +79,10 @@ public class MainController {
             model.addAttribute("message", null);
             messageRepository.save(message);
         }
-        Iterable<Message> messages = messageRepository.findAll();
-        model.addAttribute("messages", messages);
+        Page<Message> page = messageRepository.findAll(pageable);
+
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
         return "mainPage";
     }
 
