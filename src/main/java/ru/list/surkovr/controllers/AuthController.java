@@ -12,22 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import ru.list.surkovr.domain.User;
-import ru.list.surkovr.domain.dto.CaptchaResponseDto;
 import ru.list.surkovr.services.UserService;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
 @Controller
 public class AuthController {
-
-    private final static String RECAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
-
-    @Value("${recaptcha.secret}")
-    private String recaptchaSecret;
 
     @Autowired
     private UserService userService;
@@ -46,16 +39,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@Valid User user,
-                               @RequestParam("g-recaptcha-response") String captchaResponse,
                                @RequestParam("password2") String passwordConfirm,
                                BindingResult bindingResult,
                                Model model) {
-        String url = String.format(RECAPTCHA_URL, recaptchaSecret, captchaResponse);
-        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-        if (!response.isSuccess()) {
-            model.addAttribute("captchaError", "Fill captcha");
-        }
-
         boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
         if (isConfirmEmpty) {
             model.addAttribute("password2Error", "Password confirmation could not be blank");
@@ -65,7 +51,7 @@ public class AuthController {
             model.addAttribute("passwordError", "Passwords are different");
 //            return "registration";
         }
-        if (isConfirmEmpty || bindingResult.hasErrors() || !response.isSuccess()) {
+        if (isConfirmEmpty || bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errors);
             return "registration";
