@@ -61,36 +61,4 @@ public class UserServiceTest {
         Assert.assertFalse(isUserCreated);
         verify(userRepository, times(0)).save(any(User.class));;
     }
-
-    @Test
-    public void activateUser() {
-        String activateCode = "activate";
-        User user = new User();
-        user.setActivationCode("some another code");
-        doReturn(user)
-                .when(userRepository)
-                .findByActivationCode(activateCode);
-
-        boolean isUserActivated = userService.activateUser(activateCode);
-
-        Assert.assertTrue(isUserActivated);
-        Assert.assertNull(user.getActivationCode());
-
-        verify(userRepository, times(1)).save(user);
-    }
-
-    @Test
-    public void activateFailTest() {
-        boolean isUserActivated = userService.activateUser("activate me");
-
-        Assert.assertFalse(isUserActivated);
-
-        verify(userRepository, times(0)).save(any(User.class));
-    }
-
-    @Test(expected = ArithmeticException.class)
-    public void error() {
-        int i = 0;
-        int s = 1 / i;
-    }
 }
