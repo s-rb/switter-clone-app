@@ -26,8 +26,6 @@ public class UserServiceTest {
     @MockBean
     private UserRepository userRepository;
     @MockBean
-    private MailSender mailSender;
-    @MockBean
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -46,11 +44,7 @@ public class UserServiceTest {
                 Collections.singleton(Role.USER)
         ));
 
-        verify(userRepository, times(1)).save(user);
-        verify(mailSender, times(1))
-                .send(ArgumentMatchers.eq(user.getEmail()),
-                        ArgumentMatchers.eq("activation code"),
-                        ArgumentMatchers.contains("Welcome to Switter"));
+        verify(userRepository, times(1)).save(user);;
     }
 
     @Test
@@ -65,9 +59,7 @@ public class UserServiceTest {
         boolean isUserCreated = userService.addUser(user);
 
         Assert.assertFalse(isUserCreated);
-        verify(userRepository, times(0)).save(any(User.class));
-        verify(mailSender, times(0))
-                .send(anyString(), anyString(), anyString());
+        verify(userRepository, times(0)).save(any(User.class));;
     }
 
     @Test

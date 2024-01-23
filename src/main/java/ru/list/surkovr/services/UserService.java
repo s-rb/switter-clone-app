@@ -23,8 +23,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private MailSender mailSender;
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -48,32 +46,6 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
 
-        sendMessage(user);
-
-        return true;
-    }
-
-    private void sendMessage(User user) {
-        if (!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to Switter. Please, visit next link: " +
-                            "http://localhost:8080/activate/%s",
-                    user.getUsername(),
-                    user.getActivationCode()
-            );
-
-            mailSender.send(user.getEmail(), "activation code", message);
-        }
-    }
-
-    public boolean activateUser(String code) {
-        User user = userRepository.findByActivationCode(code);
-        if (isNull(user)) {
-            return false;
-        }
-        user.setActivationCode(null);
-        userRepository.save(user);
         return true;
     }
 
@@ -108,10 +80,6 @@ public class UserService implements UserDetailsService {
             user.setPassword(password);
         }
         userRepository.save(user);
-
-        if (isEmailChanged) {
-            sendMessage(user);
-        }
     }
 
     public void subscribe(User currentUser, User user) {
